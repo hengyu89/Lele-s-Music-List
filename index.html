@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="乐乐的弹唱歌单。按歌名、歌手、拼音或关键词搜索，快速找到今晚想听的歌。"
+      content="哇啦哇啦稀里哗啦的歌单。按歌名、歌手、拼音快速搜索哇啦会唱的歌。"
     />
     <meta name="theme-color" content="#191624" />
-    <title>乐乐的弹唱歌单</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>哇啦哇啦稀里哗啦的歌单</title>
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <div class="page-shell">
@@ -21,7 +21,7 @@
             </svg>
           </span>
           <span>
-            <strong>乐乐的歌单</strong>
+            <strong>哇啦哇啦稀里哗啦<span class="brand-suffix">的歌单</span></strong>
             <small>LIVE SONGBOOK</small>
           </span>
         </a>
@@ -32,7 +32,7 @@
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero-copy">
             <p class="eyebrow"><span></span> 今晚，想听什么？</p>
-            <h1 id="hero-title">把喜欢的歌，<br /><em>唱给你听。</em></h1>
+            <h1 id="hero-title"><span class="hero-name">哇啦哇啦<br />稀里哗啦</span><small>的<em>歌单</em></small></h1>
             <p class="hero-intro">
               搜歌名、歌手或拼音都可以。找到以后点一下“点这首”，把口令复制到直播间吧。
             </p>
@@ -50,7 +50,7 @@
             <div class="vinyl">
               <div class="vinyl-lines"></div>
               <div class="vinyl-label">
-                <span>LELE</span>
+                <span>WALA</span>
                 <b>唱</b>
                 <small>FOR YOU</small>
               </div>
@@ -65,7 +65,7 @@
 
           <div class="hero-stats" aria-label="歌单数据">
             <div><strong id="songCount">0</strong><span>首会唱的歌</span></div>
-            <div><strong id="artistCount">0</strong><span>位歌手</span></div>
+            <div><strong id="artistCount">0</strong><span>个歌手/组合</span></div>
             <div><strong>∞</strong><span>份今晚的期待</span></div>
           </div>
         </section>
@@ -74,9 +74,9 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow dark"><span></span> SONG LIST</p>
-              <h2 id="songbook-title">乐乐会唱的歌</h2>
+              <h2 id="songbook-title">哇啦哇啦的<span>歌单</span></h2>
             </div>
-            <p>示例歌单 · 正式上线前替换为乐乐的完整曲库</p>
+            <p>来自哇啦的真实歌单 · 搜一首今晚想听的</p>
           </div>
 
           <div class="search-panel">
@@ -89,21 +89,45 @@
                 id="songSearch"
                 type="search"
                 autocomplete="off"
-                placeholder="搜索歌名 / 歌手 / 拼音，例如：晴天、周杰伦、qingtian"
+                placeholder="搜索歌名 / 歌手 / 拼音，例如：等、花粥、deng"
               />
               <kbd>⌘ K</kbd>
             </label>
             <div class="filter-row" aria-label="歌曲筛选">
-              <div class="filter-chips" id="filterChips"></div>
-              <button class="favorites-filter" id="favoritesFilter" type="button" aria-pressed="false">
-                <span>♡</span> 我的收藏
-              </button>
+              <div class="filter-chips">
+                <button class="filter-chip active" id="allFilter" type="button">全部</button>
+                <button class="filter-chip" id="artistFilter" type="button" aria-expanded="false" aria-controls="filterPanel">歌手 <span aria-hidden="true">⌄</span></button>
+                <button class="filter-chip" id="lengthFilter" type="button" aria-expanded="false" aria-controls="filterPanel">字数 <span aria-hidden="true">⌄</span></button>
+                <button class="filter-chip" id="styleFilter" type="button" aria-expanded="false" aria-controls="filterPanel">风格 <span aria-hidden="true">⌄</span></button>
+                <button class="clear-inline" id="clearFilters" type="button" hidden>清除全部</button>
+              </div>
+              <div class="filter-actions">
+                <button class="random-filter" id="randomSongListButton" type="button"><span aria-hidden="true">✦</span> 随机来一首</button>
+                <button class="favorites-filter" id="favoritesFilter" type="button" aria-pressed="false">
+                  <span>♡</span> 我的收藏
+                </button>
+              </div>
+            </div>
+            <div class="filter-panel" id="filterPanel" hidden>
+              <div class="panel-heading"><div class="panel-heading-main"><strong id="panelTitle"></strong><button id="clearPanelFilter" type="button" hidden></button></div><button id="closePanel" type="button" aria-label="关闭筛选">×</button></div>
+              <p class="panel-hint" id="panelHint"></p>
+              <div class="artist-order" id="artistOrder" role="group" aria-label="歌手排序" hidden>
+                <button type="button" data-artist-order="count" aria-pressed="true">按收录歌曲数</button>
+                <button type="button" data-artist-order="name" aria-pressed="false">按拼音 A–Z</button>
+                <button type="button" data-artist-order="name-desc" aria-pressed="false">按拼音 Z–A</button>
+              </div>
+              <input class="panel-search" id="artistSearch" type="search" placeholder="搜索歌手名称" hidden />
+              <div class="panel-options" id="panelOptions"></div>
             </div>
           </div>
 
-          <div class="results-meta" aria-live="polite">
-            <p id="resultsText">正在整理歌单…</p>
-            <button id="clearFilters" type="button" hidden>清除筛选</button>
+          <div class="results-meta">
+            <p id="resultsText" aria-live="polite">正在整理歌单…</p>
+            <div class="initial-filter" role="group" aria-label="歌名首字母筛选">
+              <span class="initial-label">歌名首字母</span>
+              <button id="clearInitialFilter" type="button" hidden>清除字母</button>
+              <div class="initial-letters" id="initialLetters"></div>
+            </div>
           </div>
 
           <div class="song-list" id="songList"></div>
@@ -112,7 +136,7 @@
           <div class="empty-state" id="emptyState" hidden>
             <span>♫</span>
             <h3>这首暂时没找到</h3>
-            <p>换个歌名、歌手或拼音试试，也可以把想听的歌告诉乐乐。</p>
+            <p>换个歌名、歌手或拼音试试，也可以把想听的歌告诉哇啦。</p>
             <button id="resetSearch" type="button">看看全部歌曲</button>
           </div>
         </section>
@@ -125,14 +149,14 @@
           <ol>
             <li><span>01</span><div><strong>搜索歌曲</strong><p>歌名、歌手、拼音都能搜</p></div></li>
             <li><span>02</span><div><strong>点击“点这首”</strong><p>自动复制点歌口令</p></div></li>
-            <li><span>03</span><div><strong>粘贴到直播间</strong><p>剩下的，就交给乐乐吧</p></div></li>
+            <li><span>03</span><div><strong>粘贴到直播间</strong><p>剩下的，就交给哇啦吧</p></div></li>
           </ol>
         </section>
       </main>
 
       <footer>
-        <div class="footer-mark">L</div>
-        <div><strong>谢谢你来听我唱歌。</strong><p>每一次点歌，都是一场小小的相遇。</p></div>
+        <div class="footer-mark">W</div>
+        <div><strong>谢谢你来听哇啦唱歌。</strong><p>每一次点歌，都是一场小小的相遇。</p></div>
         <a href="#top">回到顶部 ↑</a>
       </footer>
     </div>
@@ -141,7 +165,7 @@
       <span>✓</span><p><strong>点歌口令已复制</strong><small id="toastMessage"></small></p>
     </div>
 
-    <script src="songs.js"></script>
-    <script src="app.js"></script>
+    <script src="js/songs.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
